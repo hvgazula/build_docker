@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build -t hvgazula/test_image ./docker/Dockerfile
+      run: docker build -t hvgazula/test_image ./docker
       
       # Push the Docker image to Docker Hub (only if the PR is merged)
     - name: Push Docker image
