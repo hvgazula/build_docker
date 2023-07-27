@@ -16,3 +16,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
+      # Push the Docker image to Docker Hub (only if the PR is merged)
+    - name: Push Docker image
+#       if: github.event.pull_request.merged == true
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push $my-image-name:$(date +%s)
