@@ -47,4 +47,4 @@ RUN pip install torch-geometric
 RUN pip install rtree
 RUN conda install -c conda-forge libspatialindex=1.9.3
 RUN conda clean -a
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-l", "-c"]
