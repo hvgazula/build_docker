@@ -15,11 +15,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build -t hvgazula/pial_nn ./docker
+      run: docker build -t hvgazula/vox2cortex ./docker
+      
       
       # Push the Docker image to Docker Hub (only if the PR is merged)
     - name: Push Docker image
 #       if: github.event.pull_request.merged == true
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push hvgazula/pial_nn
+        docker push hvgazula/vox2cortex
