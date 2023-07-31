@@ -19,15 +19,16 @@ jobs:
       
     # Cleanup steps to free up disk space
     - name: Cleanup disk space
-    if: runner.os == 'Linux'
-    run: |
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-      # Push the Docker image to Docker Hub (only if the PR is merged)
-    - name: Push Docker image
-#       if: github.event.pull_request.merged == true
+      if: runner.os == 'Linux'
       run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push hvgazula/vox2cortex
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+    # Push the Docker image to Docker Hub (only if the PR is merged)
+    - name: Push Docker image
+#     if: github.event.pull_request.merged == true
+      run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push hvgazula/vox2cortex
