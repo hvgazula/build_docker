@@ -18,6 +18,7 @@ jobs:
       run: docker build -t hvgazula/vox2cortex ./docker
       
     # Cleanup steps to free up disk space
+    
     - name: Cleanup disk space
       if: runner.os == 'Linux'
       run: |
