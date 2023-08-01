@@ -26,7 +26,7 @@ jobs:
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         
     - name: Build the Docker image
-      run: docker build -t hvgazula/corticalflow ./docker
+      run: docker build -t hvgazula/topofit ./docker
       
     # Cleanup steps to free up disk space
 
@@ -35,4 +35,4 @@ jobs:
 #     if: github.event.pull_request.merged == true
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push hvgazula/corticalflow
+          docker push hvgazula/topofit
