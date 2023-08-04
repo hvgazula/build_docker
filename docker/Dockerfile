@@ -5,8 +5,6 @@ ENV PATH=/opt/miniconda3/bin:$PATH
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
-ENV PIPENV_VENV_IN_PROJECT=1
-ENV JCC_JDK=/usr/lib/jvm/java-8-openjdk-amd64
 RUN USE_CUDA=1
 RUN CUDA_VERSION=11.6.1
 RUN CUDNN_VERSION=8
@@ -24,35 +22,21 @@ curl \
 git \
 wget \
 cmake \
-openjdk-8-jdk \
-libaio-dev && \
-apt-get install -y --no-install-recommends llvm-10 lldb-10 llvm-10-dev libllvm10 llvm-10-runtime
-RUN rm -rf /var/lib/apt/lists/*
-ENV PYTHON_VERSION=3.8
-ENV CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
+vim && rm -rf /var/lib/apt/lists/*
+ENV PYTHON_VERSION=3.7
+ENV CONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-Linux-x86_64.sh
 RUN curl -fsSL -v -o ~/miniconda.sh -O ${CONDA_URL} && \
 chmod +x ~/miniconda.sh && \
 ~/miniconda.sh -b -p /opt/miniconda3 
-
+RUN mkdir /app
 WORKDIR /app
+RUN echo "redo copy"
 COPY environment.yml .
-COPY CBSI.tar.gz .
-RUN tar -xf CBSI.tar.gz
-RUN mkdir niftyreg-build
-ENV CMAKE_BUILD_TYPE=Release
-WORKDIR /app/niftyreg-build
-RUN cmake ../niftyreg-CBSI
-RUN make
-RUN make install
-WORKDIR /app
-RUN conda env create -f environment.yml && echo "source activate corticalflow" >> ~/.bashrc
-SHELL ["conda", "run", "-n", "corticalflow", "/bin/bash", "-c"]
-RUN pip install jcc==3.12
-RUN git clone https://github.com/neuroneural/corticalflow_fork.git
-WORKDIR /app/corticalflow_fork/docker/nighres
-RUN git checkout tags/docker1
-RUN ./build.sh
-RUN python3 -m pip install .
+COPY mesh_intersection-0.1.0-cp37-cp37m-linux_x86_64.whl .
+RUN conda env create -f environment.yml && echo "source activate cortexode" > ~/.bashrc
+SHELL ["conda", "run", "-n", "cortexode", "/bin/bash", "-c"]
+RUN conda install pytorch3d=0.4.0 -c pytorch3d
+RUN pip install mesh_intersection-0.1.0-cp37-cp37m-linux_x86_64.whl
 RUN apt-get clean
 RUN pip cache purge
 RUN conda clean -a
