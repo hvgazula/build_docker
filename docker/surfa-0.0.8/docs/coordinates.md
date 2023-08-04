@@ -1,4 +1,0 @@
-Coordinate Systems
-==================
-
-TODO
