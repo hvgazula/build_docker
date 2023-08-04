@@ -45,7 +45,7 @@ RUN cmake ../niftyreg-CBSI
 RUN make
 RUN make install
 WORKDIR /app
-RUN conda env create -f environment.yml
+RUN conda env create -f environment.yml && echo "source activate deepcsr" > ~/.bashrc
 SHELL ["conda", "run", "-n", "deepcsr", "/bin/bash", "-c"]
 RUN git clone https://github.com/neuroneural/DeepCSR-fork.git
 WORKDIR /app/DeepCSR-fork/docker/nighres
@@ -55,4 +55,4 @@ RUN python3 -m pip install .
 RUN apt-get clean
 RUN pip cache purge
 RUN conda clean -a
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-l"]
