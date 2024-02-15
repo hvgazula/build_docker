@@ -1,10 +1,5 @@
-name: Docker Image CI
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+name: docker-image
+on: workflow_dispatch
 
 jobs:
 
@@ -26,7 +21,7 @@ jobs:
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         
     - name: Build the Docker image
-      run: docker build -t hvgazula/pialnn ./docker
+      run: docker build -t hvgazula/nobrainer -f ./nobrainer-docker/cpu.Dockerfile .
       
     # Cleanup steps to free up disk space
 
@@ -35,4 +30,4 @@ jobs:
 #     if: github.event.pull_request.merged == true
       run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push hvgazula/pialnn
+          docker push hvgazula/nobrainer:cpu
